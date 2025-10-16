@@ -1,0 +1,65 @@
+{
+  "name": "strapi-provider-email-zeptomail-v5",
+  "version": "1.0.0",
+  "description": "ZeptoMail provider for Strapi email plugin (compatible with v4 and v5)",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "develop": "tsc --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [
+    "strapi",
+    "email",
+    "provider",
+    "zeptomail",
+    "zoho",
+    "strapi-v4",
+    "strapi-v5",
+    "typescript"
+  ],
+  "author": "Hamdallah Jodah",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hamdallah90/strapi-provider-email-zeptomail-v5.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hamdallah90/strapi-provider-email-zeptomail-v5/issues"
+  },
+  "homepage": "https://github.com/hamdallah90/strapi-provider-email-zeptomail-v5#readme",
+  "dependencies": {
+		"zeptomail": "^6.2.1"
+	},
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@strapi/strapi": "^4.0.0 || ^5.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "strapi": {
+    "displayName": "ZeptoMail",
+    "description": "Send emails using ZeptoMail service",
+    "provider": "strapi-provider-email-zeptomail-v5"
+  },
+  "files": [
+    "lib/",
+    "README.md",
+    "package.json"
+  ]
+}
