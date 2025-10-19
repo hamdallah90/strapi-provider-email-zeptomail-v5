@@ -32,6 +32,9 @@ export interface SendOptions {
   html?: string;
   replyTo?: EmailAddress | string | (EmailAddress | string)[];
   attachments?: EmailAttachment[];
+  track_clicks?: boolean;
+  track_opens?: boolean;
+  client_reference?: string;
   [key: string]: any;
 }
 
@@ -54,6 +57,10 @@ export interface ZeptoMailMessage {
     mime_type: string;
     name: string;
   }>;
+  mime_headers?: Record<string, string>;
+  track_clicks?: boolean;
+  track_opens?: boolean;
+  client_reference?: string;
 }
 
 export interface EmailProvider {
@@ -73,7 +80,7 @@ const zeptoMailProvider: ZeptoMailProvider = {
 
     return {
       send: async function (options: SendOptions): Promise<any> {
-        const { from, to, cc, bcc, subject, text, html, replyTo, attachments, ...rest } = options;
+        const { from, to, cc, bcc, subject, text, html, replyTo, attachments, mimeHeaders, inlineImages, track_clicks, track_opens, client_reference, ...rest } = options;
 
         const messageDetails: ZeptoMailMessage = {
           to: [
@@ -119,6 +126,32 @@ const zeptoMailProvider: ZeptoMailProvider = {
               content: base64Content,
               mime_type: attachment.contentType || 'application/octet-stream',
               name: attachment.filename,
+            };
+          });
+        }
+
+        if (mimeHeaders) {
+          messageDetails["mime_headers"] = mimeHeaders;
+        }
+
+        if (track_clicks !== undefined) {
+          messageDetails["track_clicks"] = track_clicks;
+        }
+
+        if (track_opens !== undefined) {
+          messageDetails["track_opens"] = track_opens;
+        }
+
+        if (client_reference) {
+          messageDetails["client_reference"] = client_reference;
+        }
+
+        if (inlineImages) {
+          messageDetails["attachments"] = inlineImages.map((image: { content: any; contentType: any; filename: any; }) => {
+            return {
+              content: image.content.toString('base64'),
+              mime_type: image.contentType || 'image/png',
+              cid: image.filename,
             };
           });
         }
