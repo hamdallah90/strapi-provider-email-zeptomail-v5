@@ -56,7 +56,10 @@ await strapi.plugin('email').service('email').send({
   to: 'recipient@example.com',
   subject: 'Welcome!',
   text: 'Welcome to our platform!',
-  html: '<h1>Welcome!</h1><p>Welcome to our platform!</p>'
+  html: '<h1>Welcome!</h1><p>Welcome to our platform!</p>',
+  track_opens: true,
+  track_clicks: true,
+  client_reference: 'welcome-email-001'
 });
 ```
 
@@ -65,9 +68,13 @@ await strapi.plugin('email').service('email').send({
 - ✅ Compatible with Strapi v4 and v5
 - ✅ TypeScript support
 - ✅ Full attachment support
+- ✅ Inline images support
+- ✅ Custom MIME headers
 - ✅ CC and BCC support
 - ✅ Reply-to configuration
 - ✅ Base64 attachment encoding
+- ✅ Email tracking (opens and clicks)
+- ✅ Client reference support
 - ✅ Error handling
 
 ## API Reference
@@ -85,6 +92,11 @@ interface SendOptions {
   html?: string;
   replyTo?: string | EmailAddress | (string | EmailAddress)[];
   attachments?: EmailAttachment[];
+  mimeHeaders?: Record<string, string>;
+  inlineImages?: InlineImage[];
+  track_clicks?: boolean;
+  track_opens?: boolean;
+  client_reference?: string;
 }
 ```
 
@@ -105,6 +117,66 @@ interface EmailAttachment {
   filename: string;
   contentType?: string;
 }
+```
+
+### Inline Image
+
+```typescript
+interface InlineImage {
+  content: Buffer;
+  filename: string;
+  contentType?: string;
+}
+```
+
+## Advanced Usage
+
+### Sending Email with Attachments
+
+```javascript
+await strapi.plugin('email').service('email').send({
+  to: 'recipient@example.com',
+  subject: 'Document Attached',
+  html: '<p>Please find the attached document.</p>',
+  attachments: [
+    {
+      filename: 'document.pdf',
+      content: Buffer.from('...'),
+      contentType: 'application/pdf'
+    }
+  ]
+});
+```
+
+### Sending Email with Inline Images
+
+```javascript
+await strapi.plugin('email').service('email').send({
+  to: 'recipient@example.com',
+  subject: 'Email with Image',
+  html: '<p>Check out this image: <img src="cid:logo.png" /></p>',
+  inlineImages: [
+    {
+      filename: 'logo.png',
+      content: Buffer.from('...'),
+      contentType: 'image/png'
+    }
+  ]
+});
+```
+
+### Using Custom MIME Headers
+
+```javascript
+await strapi.plugin('email').service('email').send({
+  to: 'recipient@example.com',
+  subject: 'Email with Custom Headers',
+  html: '<p>Email content</p>',
+  mimeHeaders: {
+    'X-Custom-Header': 'custom-value',
+    'X-Priority': '1'
+  }
+});
 ```
 
 ## Development
